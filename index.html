@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Build a run of show, test an overrun, and hand your crew a clear schedule. Private, local event planning with no account.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Runloom — A little more room to run.</title>
+  <link rel="stylesheet" href="style.css"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script type="module" src="src/app.mjs"></script>
+</head>
+<body>
+  <header class="top"><a href="./" class="brand"><span class="logo" aria-hidden="true">r↗</span>runloom</a><span class="tagline">THE RUN OF SHOW, REWOVEN.</span><a href="https://github.com/KingReaper6940/runloom">GitHub ↗</a></header>
+  <main>
+    <section class="hero"><div><p class="eyebrow">FOR THE PEOPLE BEHIND THE PROGRAM</p><h1>Good events need<br><em>a little breathing room.</em></h1><p class="intro">Shape your running order. See where the minutes go.<br>Hand your crew a plan that adds up.</p></div><div class="hero-label"><span aria-hidden="true">↳</span><p>One track.<br>Every handoff.<br><strong>All accounted for.</strong></p><small>Local workspace · No account</small></div></section>
+    <div class="utility"><div><strong>Your workspace</strong><span>Not saved automatically. Download a project to keep it.</span></div><div class="buttons"><button id="example" class="subtle">Load example</button><button id="new" class="subtle">New rundown</button><label class="file-button">Open project<input type="file" id="open" accept=".json,application/json" aria-label="Open Runloom project"></label><button id="save" class="dark">Save project ↓</button></div></div>
+    <p id="message" class="message" role="status" aria-live="polite">Example loaded. Edit any segment to make it your own.</p>
+    <section class="settings" aria-label="Event settings"><label class="event-name">Event name<input id="title" maxlength="80" autocomplete="off"></label><label>Start time<input id="start" type="time" step="60"></label><label>Hard stop<input id="stop" type="time" step="60"></label><p>24-hour local clock.<br>A stop before the start is next day.</p></section>
+    <div class="workgrid"><section class="editor" aria-labelledby="running-order"><div class="section-head"><div><p class="eyebrow">01 / BUILD THE FLOW</p><h2 id="running-order">The running order</h2></div><span id="segment-count" class="counter"></span></div><div id="segments"></div><button id="add" class="add">+ Add a segment</button><p class="help">Include transitions as their own segments. Breaks stay at their planned length; the app never cuts them automatically.</p></section>
+    <aside class="overview" aria-labelledby="overview-title"><div class="section-head"><div><p class="eyebrow">02 / WATCH THE CLOCK</p><h2 id="overview-title">The big picture</h2></div><span class="live-dot">Live</span></div><div id="summary"></div><div id="scenario-slot"></div><div id="timeline-panel"><div class="timeline-heading"><h3>Timing sheet</h3><span>Start → end</span></div><ol id="timeline"></ol></div><div class="export-panel"><button id="csv" class="dark">Download timing CSV ↓</button><div id="print-slot"></div><details><summary>Inspect export</summary><label for="export-type">Format</label><select id="export-type"><option value="csv">Timing CSV</option><option value="json">Project JSON</option></select><textarea id="export-preview" readonly aria-label="Export preview" spellcheck="false"></textarea></details></div></aside></div>
+    <section class="boundaries"><div><span>01</span><h3>Move the minutes</h3><p>Edit a duration or reorder a segment. Every downstream start follows.</p></div><div><span>02</span><h3>Make the handoff clear</h3><p>Give each segment an owner and a cue. Keep transitions visible.</p></div><div><span>03</span><h3>Keep your own copy</h3><p>Download JSON to reopen later, or CSV to share. No uploads or cloud sync.</p></div></section>
+  </main><footer><a class="brand" href="./">runloom</a><p>Less clock math. More room for the room.</p><span>One track · Minute precision · No timezone conversion</span></footer>
+</body>
+</html>

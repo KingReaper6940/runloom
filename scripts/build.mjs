@@ -1,0 +1,13 @@
+import { mkdir, copyFile, rm } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { resolve, dirname } from 'node:path';
+const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
+const output=resolve(root,'dist');
+if(dirname(output)!==root) throw new Error('Unexpected build output directory.');
+const files=['index.html','style.css','favicon.svg','src/core.mjs','src/files.mjs','src/example.mjs','src/app.mjs'];
+for(const file of files.filter(file=>file.endsWith('.mjs'))) execFileSync(process.execPath,['--check',resolve(root,file)]);
+await rm(output,{recursive:true,force:true});
+await mkdir(resolve(output,'src'),{recursive:true});
+for(const file of files) await copyFile(resolve(root,file),resolve(output,file));
+console.log('Built Runloom in dist/');
