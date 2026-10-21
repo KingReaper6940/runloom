@@ -1,0 +1,10 @@
+import { mkdir, writeFile } from 'node:fs/promises';
+import { exampleProject } from '../src/example.mjs';
+import { writeProject, scheduleCsv } from '../src/files.mjs';
+const base=exampleProject();
+const scenario=exampleProject(); scenario.scenario.extra=15;
+await mkdir('examples',{recursive:true});
+await writeFile('examples/workshop.json',writeProject(base));
+await writeFile('examples/overrun.json',writeProject(scenario));
+await writeFile('examples/overrun.csv',scheduleCsv(scenario));
+console.log('Wrote baseline project, overrun project, and scenario CSV.');

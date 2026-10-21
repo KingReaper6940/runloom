@@ -1,0 +1,7 @@
+"Order","Segment","Type","Owner","Baseline start","Baseline end","Projected start","Projected end","Planned minutes","Added minutes","Cue"
+"1","Doors & coffee","break","Welcome desk","09:00","09:15","09:00","09:15","15","0","Open doors; music low."
+"2","Welcome & housekeeping","session","Host","09:15","09:25","09:15","09:25","10","0","Handheld mic; title slide."
+"3","Build something small","session","Speaker","09:25","09:55","09:25","10:10","30","15","Switch to demo laptop."
+"4","Room reset","transition","Stage lead","09:55","10:00","10:10","10:15","5","0","Move chairs into small groups."
+"5","Hands-on workshop","session","Facilitator","10:00","10:35","10:15","10:50","35","0","Share worksheet; call a five-minute warning."
+"6","Show & tell / close","session","Host","10:35","10:50","10:50","11:05","15","0","Two demos, then thank the room."
