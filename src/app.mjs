@@ -63,6 +63,7 @@ function renderEditors(focusId, focusAction = 'up') {
   });
   $('segment-count').textContent=`${project.segments.length} / ${MAX_SEGMENTS}`;
   $('add').disabled=project.segments.length >= MAX_SEGMENTS;
+  syncScenario();
 }
 function preview() {
   $('export-preview').value=current ? ($('export-type').value === 'json' ? writeProject(project) : scheduleCsv(project)) : '';
@@ -71,6 +72,14 @@ function renderOverview() {
   $('summary').replaceChildren(); $('timeline').replaceChildren();
   try {
     current=schedule(project);
+    document.body.classList.remove('invalid');
+    $('print').disabled=false;
+    $('print-title').textContent=current.project.title;
+    $('print-context').textContent=`${clockLabel(current.start)} start · ${clockLabel(current.deadline)} hard stop · ${current.extraMinutes ? `Scenario: +${current.extraMinutes} min at ${project.segments.find(segment=>segment.id===project.scenario.segmentId).title}` : 'Baseline schedule'} · Local wall-clock times`;
+    for (const option of $('scenario-segment').options) {
+      const segment=project.segments.find(segment=>segment.id===option.value);
+      if(segment) option.textContent=segment.title;
+    }
     const main=element('div',`summary-main${current.remaining < 0 ? ' over' : ''}`);
     main.append(element('span','',current.remaining < 0 ? 'Past the hard stop' : 'Room before the hard stop'));
     const remaining=element('div','remaining',`${Math.abs(current.remaining)} `);
@@ -98,6 +107,7 @@ function renderOverview() {
     return true;
   } catch(error) {
     current=null; $('timeline-panel').hidden=true; $('save').disabled=true; $('csv').disabled=true;
+    document.body.classList.add('invalid'); $('print').disabled=true;
     $('export-preview').value='';
     $('summary').append(element('p','help', 'Timing is unavailable until the input is valid.'));
     announce(error.message,true);
@@ -112,6 +122,39 @@ function loadProject(next,message) {
   revision++; project=next;
   for(const key of ['title','start','stop']) $(key).value=project[key];
   renderEditors(); renderOverview(); announce(message);
+}
+
+function installScenario() {
+  const section=element('section','scenario');
+  section.setAttribute('aria-labelledby','scenario-heading');
+  const heading=element('h3','','What if a segment runs long?'); heading.id='scenario-heading';
+  const intro=element('p','','Add minutes to one segment and see the downstream effect. Your planned durations stay intact.');
+  const fields=element('div','scenario-fields');
+  const segmentLabel=element('label','','Apply overrun to');
+  const select=element('select'); select.id='scenario-segment'; segmentLabel.append(select);
+  const extraLabel=element('label','','Extra minutes');
+  const extra=element('input'); extra.id='scenario-extra'; extra.type='number'; extra.min='0'; extra.max='120'; extra.step='1'; extra.value='0'; extraLabel.append(extra);
+  fields.append(segmentLabel,extraLabel);
+  const reset=element('button','subtle','Reset overrun'); reset.id='scenario-reset';
+  section.append(heading,intro,fields,reset); $('scenario-slot').append(section);
+  select.addEventListener('change',()=>{ project.scenario.segmentId=select.value || null; changed(); });
+  extra.addEventListener('input',()=>{project.scenario.extra=Number(extra.value); changed();});
+  reset.addEventListener('click',()=>{project.scenario.extra=0; extra.value='0'; changed();});
+  const print=element('button','subtle','Print crew sheet / Save PDF'); print.id='print';
+  print.addEventListener('click',()=>{if(current) window.print();}); $('print-slot').append(print);
+  const printHeader=element('div','print-heading');
+  const title=element('h1'); title.id='print-title';
+  const context=element('p'); context.id='print-context';
+  printHeader.append(element('p','','Runloom / crew sheet'),title,context);
+  const warning=element('p','print-warning','Schedule unavailable: resolve invalid inputs before printing.');
+  $('summary').parentNode.prepend(printHeader,warning);
+}
+function syncScenario() {
+  const select=$('scenario-segment'); select.replaceChildren();
+  const none=element('option','','Choose a segment'); none.value=''; select.append(none);
+  for(const segment of project.segments) {const option=element('option','',segment.title); option.value=segment.id; select.append(option);}
+  select.value=project.scenario.segmentId ?? '';
+  $('scenario-extra').value=project.scenario.extra;
 }
 function download(content,name,type) {
   if(!current) return;
@@ -162,4 +205,5 @@ $('open').addEventListener('change',async event=>{
   } catch(error) { if(token===revision) announce(`Project not opened: ${error.message}`,true); }
   finally { event.target.value=''; }
 });
+installScenario();
 loadProject(project,'Example loaded. Edit any segment to make it your own.');
