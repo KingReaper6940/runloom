@@ -1,0 +1,1 @@
+{"name":"runloom","version":"1.0.0","private":true,"type":"module","description":"A local run-of-show planner with reversible overrun scenarios.","scripts":{"test":"node --test test/core.test.mjs","build":"node scripts/build.mjs","dev":"node scripts/serve.mjs"},"engines":{"node":">=20"}}
