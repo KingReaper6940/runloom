@@ -1,5 +1,7 @@
 # Runloom
 
+[Open runloom](https://runloom-bice.vercel.app)
+
 **A little more room to run.**
 
 A local run-of-show planner for workshops, meetups, and small events. Build a running order, assign an owner and cue to each segment, and see whether the program fits its hard stop. Test an overrun without rewriting your original durations.
@@ -114,7 +116,7 @@ Import the repository in your Vercel dashboard with:
 | Output directory | `dist` |
 | Install command | Empty; no dependencies |
 
-These build/output settings are included in `vercel.json`. No environment variables, database, server functions, or paid APIs are needed. This repository does not advertise a live deployment URL. Other static hosts work if they serve `.mjs` files as JavaScript.
+These build/output settings are included in `vercel.json`. No environment variables, database, server functions, or paid APIs are needed. Other static hosts work if they serve `.mjs` files as JavaScript.
 
 ## Related approaches
 
